@@ -17,7 +17,7 @@ const Hero = ({ onSearch }: HeroProps) => {
   };
 
   return (
-    <section className="relative w-full px-4 md:px-12 pt-8 pb-20 overflow-hidden">
+    <section id="home" className="relative w-full px-4 md:px-12 pt-8 pb-20 overflow-hidden">
       {/* Background Elements */}
       <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/5 rounded-full blur-3xl -z-10 translate-x-1/3 -translate-y-1/4"></div>
       
@@ -44,7 +44,7 @@ const Hero = ({ onSearch }: HeroProps) => {
             transition={{ duration: 0.6, delay: 0.2 }} 
             className="text-secondary font-medium"
           >
-            Become member of our hospital community? <span className="text-primary cursor-pointer">Sign up</span>
+            Become member of our hospital community? <span className="text-primary cursor-pointer" onClick={() => document.getElementById('doctors-section')?.scrollIntoView({ behavior: 'smooth' })}>Book Appointment</span>
           </motion.div>
 
           {/* Search Box */}

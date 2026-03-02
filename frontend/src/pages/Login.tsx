@@ -1,33 +1,46 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Lock, User, Stethoscope, Shield } from 'lucide-react';
+import { Lock, User, Stethoscope, Shield, Loader2 } from 'lucide-react';
 
 const Login = () => {
   const navigate = useNavigate();
   const [role, setRole] = useState<'doctor' | 'patient' | 'admin'>('doctor');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, this would call Supabase Auth
-    if (role === 'admin') {
-      navigate('/dashboard/admin');
-    } else if (role === 'doctor') {
-      navigate('/dashboard/doctor');
-    } else {
-      navigate('/dashboard/patient');
-    }
+    setIsLoading(true);
+    
+    // Simulate a network request for a smoother, flawless experience
+    setTimeout(() => {
+      setIsLoading(false);
+      if (role === 'admin') {
+        navigate('/dashboard/admin');
+      } else if (role === 'doctor') {
+        navigate('/dashboard/doctor');
+      } else {
+        navigate('/dashboard/patient');
+      }
+    }, 800);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Decorative Background */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl -z-10 translate-x-1/3 -translate-y-1/4"></div>
+      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-3xl -z-10 -translate-x-1/3 translate-y-1/4"></div>
+
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white rounded-3xl shadow-xl w-full max-w-md overflow-hidden flex flex-col"
+        className="bg-white rounded-3xl shadow-xl w-full max-w-md overflow-hidden flex flex-col z-10 border border-gray-100"
       >
-        <div className="p-8 bg-primary text-white text-center">
-          <h2 className="text-3xl font-bold mb-2">Welcome Back</h2>
+        <div className="p-8 bg-primary text-white text-center relative">
+          <div className="absolute top-4 left-4 cursor-pointer" onClick={() => navigate('/')}>
+             <div className="font-bold text-lg opacity-80 hover:opacity-100 transition-opacity">Nidaan</div>
+          </div>
+          <h2 className="text-3xl font-bold mb-2 mt-4">Welcome Back</h2>
           <p className="opacity-80">Secure Portal Access</p>
         </div>
 
@@ -68,7 +81,7 @@ const Login = () => {
                 <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                 <input 
                   type={role === 'patient' ? 'tel' : 'email'} 
-                  className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 pl-12 pr-4 text-secondary focus:outline-none focus:border-primary transition-colors"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 pl-12 pr-4 text-secondary focus:outline-none focus:border-primary focus:bg-white transition-colors"
                   placeholder={role === 'doctor' ? 'dr.name@hospital.com' : role === 'admin' ? 'admin@nidaan.com' : '+1 (555) 000-0000'}
                   required
                 />
@@ -81,15 +94,26 @@ const Login = () => {
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                 <input 
                   type="password" 
-                  className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 pl-12 pr-4 text-secondary focus:outline-none focus:border-primary transition-colors"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 pl-12 pr-4 text-secondary focus:outline-none focus:border-primary focus:bg-white transition-colors"
                   placeholder="••••••••"
                   required
                 />
               </div>
             </div>
 
-            <button type="submit" className="w-full bg-primary text-white py-4 rounded-xl font-bold shadow-lg shadow-primary/30 hover:bg-primary/90 transition-all">
-              Sign In
+            <button 
+              type="submit" 
+              disabled={isLoading}
+              className="w-full bg-primary text-white py-4 rounded-xl font-bold shadow-lg shadow-primary/30 hover:bg-primary/90 transition-all flex items-center justify-center gap-2 disabled:opacity-80 disabled:cursor-not-allowed"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 size={20} className="animate-spin" />
+                  Authenticating...
+                </>
+              ) : (
+                'Sign In'
+              )}
             </button>
           </form>
 

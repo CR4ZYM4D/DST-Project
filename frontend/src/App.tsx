@@ -56,6 +56,9 @@ function App() {
 
         {/* Legacy/Redirect */}
         <Route path="/dashboard" element={<Navigate to="/login" replace />} />
+        
+        {/* Catch-all Route to prevent blank pages */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );

@@ -3,7 +3,7 @@ import { Brain, Activity, ShieldCheck, Cpu } from 'lucide-react';
 
 const AIModelInfo = () => {
   return (
-    <section className="py-20 px-4 md:px-12 bg-white">
+    <section id="ai-models" className="py-20 px-4 md:px-12 bg-white">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-semibold text-secondary mb-4">Powered by Advanced AI</h2>

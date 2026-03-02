@@ -3,7 +3,7 @@ import { Facebook, Twitter, Instagram } from 'lucide-react';
 
 const Footer = () => {
   return (
-    <footer className="bg-light-gray pt-16 pb-8 px-4 md:px-12 mt-20">
+    <footer id="contact" className="bg-light-gray pt-16 pb-8 px-4 md:px-12 mt-20">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className="space-y-4">
           <div className="flex items-center gap-2">
@@ -17,10 +17,10 @@ const Footer = () => {
         <div>
           <h3 className="text-secondary font-medium text-lg mb-4">Quick Links</h3>
           <ul className="space-y-2 text-secondary text-sm">
-            <li>Home</li>
-            <li>About Us</li>
-            <li>Doctors</li>
-            <li>Contact</li>
+            <li className="cursor-pointer hover:text-primary transition-colors" onClick={() => document.getElementById('home')?.scrollIntoView({ behavior: 'smooth' })}>Home</li>
+            <li className="cursor-pointer hover:text-primary transition-colors" onClick={() => document.getElementById('ai-models')?.scrollIntoView({ behavior: 'smooth' })}>AI Models</li>
+            <li className="cursor-pointer hover:text-primary transition-colors" onClick={() => document.getElementById('doctors-section')?.scrollIntoView({ behavior: 'smooth' })}>Doctors</li>
+            <li className="cursor-pointer hover:text-primary transition-colors">Contact</li>
           </ul>
         </div>
 
