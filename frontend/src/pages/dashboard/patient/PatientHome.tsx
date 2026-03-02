@@ -1,7 +1,5 @@
 import React from 'react';
 import { Calendar, Activity, FileText, ChevronRight, Sun } from 'lucide-react';
-import { mockVitals } from '../../../services/mockData';
-import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 
 const PatientHome = () => {
   return (
@@ -24,7 +22,7 @@ const PatientHome = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Next Appointment */}
         <div className="bg-white p-6 rounded-3xl shadow-card border border-gray-50">
           <div className="flex items-center gap-3 mb-4 text-secondary">
@@ -43,29 +41,6 @@ const PatientHome = () => {
               <p className="text-sm font-medium text-secondary">Dr. Robert Henry</p>
               <p className="text-xs text-text-gray">Cardiologist</p>
             </div>
-          </div>
-        </div>
-
-        {/* Recent Vitals Mini Chart */}
-        <div className="bg-white p-6 rounded-3xl shadow-card border border-gray-50">
-          <div className="flex items-center gap-3 mb-4 text-secondary">
-            <div className="p-2 bg-red-50 text-red-600 rounded-lg">
-              <Activity size={20} />
-            </div>
-            <h3 className="font-semibold">Heart Rate</h3>
-          </div>
-          <div className="h-24 w-full mb-2">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={mockVitals}>
-                <Area type="monotone" dataKey="value" stroke="#ef4444" fill="#fecaca" strokeWidth={2} />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-          <div className="flex justify-between items-end">
-            <div>
-              <p className="text-3xl font-bold text-secondary">72 <span className="text-sm text-text-gray font-normal">bpm</span></p>
-            </div>
-            <span className="text-xs text-green-600 font-medium bg-green-50 px-2 py-1 rounded-lg">Normal</span>
           </div>
         </div>
 

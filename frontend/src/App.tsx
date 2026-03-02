@@ -5,7 +5,7 @@ import Login from './pages/Login';
 import DashboardLayout from './layouts/DashboardLayout';
 
 // Doctor Pages
-import DoctorHome from './pages/dashboard/doctor/DoctorHome';
+import DoctorDashboard from './pages/dashboard/DoctorDashboard';
 import PatientList from './pages/dashboard/doctor/PatientList';
 import PatientProfile from './pages/dashboard/doctor/PatientProfile';
 
@@ -24,7 +24,7 @@ function App() {
         
         {/* Doctor Routes */}
         <Route path="/dashboard/doctor" element={<DashboardLayout role="doctor" />}>
-          <Route index element={<DoctorHome />} />
+          <Route index element={<DoctorDashboard />} />
           <Route path="patients" element={<PatientList />} />
           <Route path="patients/:id" element={<PatientProfile />} />
           <Route path="monitoring" element={<div className="text-center text-gray-500 mt-20">Full Monitoring Dashboard Coming Soon</div>} />

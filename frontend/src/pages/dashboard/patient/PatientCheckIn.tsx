@@ -1,9 +1,36 @@
 import React, { useState } from 'react';
-import { Smile, Frown, Meh, Save } from 'lucide-react';
+import { Smile, Frown, Meh, Save, CheckCircle } from 'lucide-react';
 
 const PatientCheckIn = () => {
   const [mood, setMood] = useState('neutral');
   const [painLevel, setPainLevel] = useState(2);
+  const [notes, setNotes] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleSubmit = () => {
+    // Simulate API submission
+    setIsSubmitted(true);
+    
+    // Reset form after 3 seconds
+    setTimeout(() => {
+      setIsSubmitted(false);
+      setMood('neutral');
+      setPainLevel(2);
+      setNotes('');
+    }, 3000);
+  };
+
+  if (isSubmitted) {
+    return (
+      <div className="max-w-2xl mx-auto space-y-8 flex flex-col items-center justify-center py-20">
+        <div className="w-20 h-20 bg-green-100 text-green-500 rounded-full flex items-center justify-center mb-4">
+          <CheckCircle size={40} />
+        </div>
+        <h2 className="text-2xl font-bold text-secondary text-center">Check-in Complete!</h2>
+        <p className="text-text-gray text-center">Your daily health log has been successfully saved and shared with your doctor.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-2xl mx-auto space-y-8">
@@ -65,12 +92,17 @@ const PatientCheckIn = () => {
         <div>
           <label className="block text-sm font-medium text-secondary mb-2">Additional Notes</label>
           <textarea 
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
             className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:border-primary h-32 resize-none"
             placeholder="Describe any specific symptoms..."
           ></textarea>
         </div>
 
-        <button className="w-full py-4 bg-primary text-white rounded-xl font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all flex items-center justify-center gap-2">
+        <button 
+          onClick={handleSubmit}
+          className="w-full py-4 bg-primary text-white rounded-xl font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all flex items-center justify-center gap-2"
+        >
           <Save size={20} />
           Submit Log
         </button>
