@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Lock, User, Stethoscope } from 'lucide-react';
+import { Lock, User, Stethoscope, Shield } from 'lucide-react';
 
 const Login = () => {
   const navigate = useNavigate();
-  const [role, setRole] = useState<'doctor' | 'patient'>('doctor');
+  const [role, setRole] = useState<'doctor' | 'patient' | 'admin'>('doctor');
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     // In a real app, this would call Supabase Auth
-    if (role === 'doctor') {
+    if (role === 'admin') {
+      navigate('/dashboard/admin');
+    } else if (role === 'doctor') {
       navigate('/dashboard/doctor');
     } else {
       navigate('/dashboard/patient');
@@ -32,32 +34,42 @@ const Login = () => {
         <div className="p-8">
           <div className="flex bg-gray-100 p-1 rounded-xl mb-8">
             <button 
+              type="button"
               onClick={() => setRole('doctor')}
-              className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2 ${role === 'doctor' ? 'bg-white text-primary shadow-sm' : 'text-gray-500'}`}
+              className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2 ${role === 'doctor' ? 'bg-white text-primary shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
             >
               <Stethoscope size={16} />
               Doctor
             </button>
             <button 
+              type="button"
               onClick={() => setRole('patient')}
-              className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2 ${role === 'patient' ? 'bg-white text-primary shadow-sm' : 'text-gray-500'}`}
+              className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2 ${role === 'patient' ? 'bg-white text-primary shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
             >
               <User size={16} />
               Patient
+            </button>
+            <button 
+              type="button"
+              onClick={() => setRole('admin')}
+              className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2 ${role === 'admin' ? 'bg-white text-primary shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+            >
+              <Shield size={16} />
+              Admin
             </button>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-6">
             <div>
               <label className="block text-xs font-medium text-gray-500 mb-1 ml-1">
-                {role === 'doctor' ? 'Medical ID / Email' : 'Phone Number'}
+                {role === 'doctor' ? 'Medical ID / Email' : role === 'admin' ? 'Admin Email' : 'Phone Number'}
               </label>
               <div className="relative">
                 <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                 <input 
-                  type={role === 'doctor' ? 'email' : 'tel'} 
+                  type={role === 'patient' ? 'tel' : 'email'} 
                   className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 pl-12 pr-4 text-secondary focus:outline-none focus:border-primary transition-colors"
-                  placeholder={role === 'doctor' ? 'dr.name@hospital.com' : '+1 (555) 000-0000'}
+                  placeholder={role === 'doctor' ? 'dr.name@hospital.com' : role === 'admin' ? 'admin@nidaan.com' : '+1 (555) 000-0000'}
                   required
                 />
               </div>
@@ -76,7 +88,7 @@ const Login = () => {
               </div>
             </div>
 
-            <button className="w-full bg-primary text-white py-4 rounded-xl font-bold shadow-lg shadow-primary/30 hover:bg-primary/90 transition-all">
+            <button type="submit" className="w-full bg-primary text-white py-4 rounded-xl font-bold shadow-lg shadow-primary/30 hover:bg-primary/90 transition-all">
               Sign In
             </button>
           </form>

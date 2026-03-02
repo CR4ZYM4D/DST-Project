@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import Doctors from '../components/Doctors';
-import Testimonials from '../components/Testimonials';
+import AIModelInfo from '../components/AIModelInfo';
 import Footer from '../components/Footer';
 
 const Home = () => {
@@ -18,8 +18,8 @@ const Home = () => {
     <div className="min-h-screen bg-white font-sans">
       <Navbar />
       <Hero onSearch={handleSearch} />
+      <AIModelInfo />
       <Doctors searchQuery={doctorSearch} specialityQuery={specialitySearch} />
-      <Testimonials />
       <Footer />
     </div>
   );

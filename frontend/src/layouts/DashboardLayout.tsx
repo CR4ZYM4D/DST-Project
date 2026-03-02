@@ -12,7 +12,7 @@ const DashboardLayout = ({ role }: Props) => {
   // Mock User
   const user = {
     id: '1',
-    name: role === 'doctor' ? 'Robert Henry' : 'Sarah Jones',
+    name: role === 'admin' ? 'System Admin' : role === 'doctor' ? 'Robert Henry' : 'Sarah Jones',
     role: role,
     phone: '1234567890'
   };

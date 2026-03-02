@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Home from './pages/Home';
 import Login from './pages/Login';
 import DashboardLayout from './layouts/DashboardLayout';
+import SettingsPage from './pages/dashboard/SettingsPage';
 
 // Doctor Pages
 import DoctorDashboard from './pages/dashboard/DoctorDashboard';
@@ -15,6 +16,11 @@ import PatientRecords from './pages/dashboard/patient/PatientRecords';
 import PatientCheckIn from './pages/dashboard/patient/PatientCheckIn';
 import Chatbot from './components/patient/Chatbot';
 
+// Admin Pages
+import AdminHome from './pages/dashboard/admin/AdminHome';
+import DoctorVerification from './pages/dashboard/admin/DoctorVerification';
+import ModelManagement from './pages/dashboard/admin/ModelManagement';
+
 function App() {
   return (
     <Router>
@@ -22,12 +28,21 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         
+        {/* Admin Routes */}
+        <Route path="/dashboard/admin" element={<DashboardLayout role="admin" />}>
+          <Route index element={<AdminHome />} />
+          <Route path="verify" element={<DoctorVerification />} />
+          <Route path="models" element={<ModelManagement />} />
+          <Route path="settings" element={<SettingsPage />} />
+        </Route>
+
         {/* Doctor Routes */}
         <Route path="/dashboard/doctor" element={<DashboardLayout role="doctor" />}>
           <Route index element={<DoctorDashboard />} />
           <Route path="patients" element={<PatientList />} />
           <Route path="patients/:id" element={<PatientProfile />} />
           <Route path="monitoring" element={<div className="text-center text-gray-500 mt-20">Full Monitoring Dashboard Coming Soon</div>} />
+          <Route path="settings" element={<SettingsPage />} />
         </Route>
 
         {/* Patient Routes */}
@@ -36,6 +51,7 @@ function App() {
           <Route path="records" element={<PatientRecords />} />
           <Route path="checkin" element={<PatientCheckIn />} />
           <Route path="chat" element={<div className="max-w-2xl mx-auto"><Chatbot /></div>} />
+          <Route path="settings" element={<SettingsPage />} />
         </Route>
 
         {/* Legacy/Redirect */}
