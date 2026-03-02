@@ -1,5 +1,5 @@
 import React from 'react';
-import { Users, Activity, FileText, Settings, Brain, LogOut, MessageSquare, Home, ClipboardList, Thermometer } from 'lucide-react';
+import { Users, Activity, Settings, LogOut, MessageSquare, Home, ClipboardList, Thermometer, ShieldCheck, Cpu } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { UserRole } from '../../types';
 
@@ -12,13 +12,16 @@ const Sidebar = ({ role }: SidebarProps) => {
   const location = useLocation();
 
   const isActive = (path: string) => {
-    if (path === '/dashboard/doctor' && location.pathname === '/dashboard/doctor') return true;
-    if (path !== '/dashboard/doctor' && location.pathname.startsWith(path)) return true;
-    if (path === '/dashboard/patient' && location.pathname === '/dashboard/patient') return true;
+    if (path === `/dashboard/${role}` && location.pathname === `/dashboard/${role}`) return true;
+    if (path !== `/dashboard/${role}` && location.pathname.startsWith(path)) return true;
     return false;
   };
 
-  const menuItems = role === 'doctor' ? [
+  const menuItems = role === 'admin' ? [
+    { icon: Home, label: 'Overview', path: '/dashboard/admin' },
+    { icon: ShieldCheck, label: 'Verify Doctors', path: '/dashboard/admin/verify' },
+    { icon: Cpu, label: 'AI Models', path: '/dashboard/admin/models' },
+  ] : role === 'doctor' ? [
     { icon: Home, label: 'Overview', path: '/dashboard/doctor' },
     { icon: Users, label: 'Patients', path: '/dashboard/doctor/patients' },
     { icon: Activity, label: 'Monitoring', path: '/dashboard/doctor/monitoring' },
@@ -32,13 +35,12 @@ const Sidebar = ({ role }: SidebarProps) => {
   return (
     <aside className="w-64 bg-white border-r border-gray-200 fixed h-full hidden md:flex flex-col z-20">
       <div className="p-6 flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
-         <div className="text-primary font-bold text-2xl">Hospital</div>
-         <div className="text-secondary text-2xl">AI</div>
+         <div className="text-primary font-bold text-2xl">Nidaan</div>
       </div>
       
       <nav className="flex-1 px-4 py-6 space-y-2">
         <div className="px-4 mb-4 text-xs font-semibold text-text-gray uppercase tracking-wider">
-          {role === 'doctor' ? 'Clinical Workspace' : 'Patient Portal'}
+          {role === 'admin' ? 'Admin Console' : role === 'doctor' ? 'Clinical Workspace' : 'Patient Portal'}
         </div>
         
         {menuItems.map((item) => (
@@ -58,13 +60,20 @@ const Sidebar = ({ role }: SidebarProps) => {
       </nav>
 
       <div className="p-4 border-t border-gray-100">
-        <div className="flex items-center gap-3 px-4 py-3 text-secondary hover:bg-gray-50 rounded-xl font-medium cursor-pointer">
+        <div 
+          onClick={() => navigate(`/dashboard/${role}/settings`)}
+          className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium cursor-pointer transition-colors ${
+            isActive(`/dashboard/${role}/settings`) 
+              ? 'bg-primary/10 text-primary' 
+              : 'text-secondary hover:bg-gray-50'
+          }`}
+        >
           <Settings size={20} />
           Settings
         </div>
         <div 
           onClick={() => navigate('/login')}
-          className="flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 rounded-xl font-medium cursor-pointer mt-1"
+          className="flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 rounded-xl font-medium cursor-pointer mt-1 transition-colors"
         >
           <LogOut size={20} />
           Logout

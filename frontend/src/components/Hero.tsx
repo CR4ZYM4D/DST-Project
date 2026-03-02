@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Play, Phone, ShieldCheck } from 'lucide-react';
+import { Phone, ShieldCheck } from 'lucide-react';
 
-const Hero = () => {
+interface HeroProps {
+  onSearch: (name: string, speciality: string) => void;
+}
+
+const Hero = ({ onSearch }: HeroProps) => {
+  const [searchName, setSearchName] = useState('');
+  const [searchSpeciality, setSearchSpeciality] = useState('');
+
+  const handleSearch = () => {
+    onSearch(searchName, searchSpeciality);
+    // Scroll to doctors section smoothly
+    document.getElementById('doctors-section')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <section className="relative w-full px-4 md:px-12 pt-8 pb-20 overflow-hidden">
+    <section id="home" className="relative w-full px-4 md:px-12 pt-8 pb-20 overflow-hidden">
       {/* Background Elements */}
       <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/5 rounded-full blur-3xl -z-10 translate-x-1/3 -translate-y-1/4"></div>
       
@@ -25,57 +38,46 @@ const Hero = () => {
             </p>
           </motion.div>
 
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex flex-col sm:flex-row gap-6 items-center"
-          >
-            {/* Booking button removed as per requirement */}
-            
-            <button className="flex items-center gap-3 text-secondary font-medium group">
-              <div className="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center group-hover:border-primary transition-colors">
-                <Play size={20} className="text-primary fill-primary ml-1" />
-              </div>
-              Watch videos
-            </button>
-          </motion.div>
-
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }} 
+            transition={{ duration: 0.6, delay: 0.2 }} 
             className="text-secondary font-medium"
           >
-            Become member of our hospital community? <span className="text-primary cursor-pointer">Sign up</span>
+            Become member of our hospital community? <span className="text-primary cursor-pointer" onClick={() => document.getElementById('doctors-section')?.scrollIntoView({ behavior: 'smooth' })}>Book Appointment</span>
           </motion.div>
 
           {/* Search Box */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
             className="bg-white p-4 rounded-3xl shadow-card max-w-2xl mt-8 flex flex-col md:flex-row gap-4 items-center border border-gray-100"
           >
             <div className="flex-1 w-full">
                 <label className="block text-xs text-text-gray ml-4 mb-1">Find a doctor</label>
-                <div className="bg-light-gray rounded-xl px-4 py-3 text-sm text-secondary w-full">
-                    Name of Doctor
-                </div>
+                <input 
+                  type="text"
+                  value={searchName}
+                  onChange={(e) => setSearchName(e.target.value)}
+                  placeholder="Name of Doctor"
+                  className="bg-light-gray rounded-xl px-4 py-3 text-sm text-secondary w-full outline-none focus:ring-2 focus:ring-primary/30 transition-all"
+                />
             </div>
             <div className="flex-1 w-full">
-                <label className="block text-xs text-text-gray ml-4 mb-1 opacity-0">Speciality</label>
-                <div className="bg-light-gray rounded-xl px-4 py-3 text-sm text-secondary w-full">
-                    Speciality
-                </div>
+                <label className="block text-xs text-text-gray ml-4 mb-1 opacity-100">Speciality</label>
+                <input 
+                  type="text"
+                  value={searchSpeciality}
+                  onChange={(e) => setSearchSpeciality(e.target.value)}
+                  placeholder="e.g. Cardiologist"
+                  className="bg-light-gray rounded-xl px-4 py-3 text-sm text-secondary w-full outline-none focus:ring-2 focus:ring-primary/30 transition-all"
+                />
             </div>
-            <div className="flex items-center gap-3 px-2">
-                <span className="text-sm text-secondary/80">Availability</span>
-                <div className="w-12 h-6 bg-primary rounded-full relative cursor-pointer">
-                    <div className="absolute right-1 top-1 w-4 h-4 bg-white rounded-full"></div>
-                </div>
-            </div>
-            <button className="bg-primary text-white px-8 py-3 rounded-2xl font-medium w-full md:w-auto">
+            <button 
+              onClick={handleSearch}
+              className="bg-primary text-white px-8 py-3 rounded-2xl font-medium w-full md:w-auto mt-5 md:mt-0 shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all"
+            >
                 Search
             </button>
           </motion.div>
@@ -109,8 +111,6 @@ const Hero = () => {
                     <p className="text-xs text-text-gray">Treat with care</p>
                 </div>
             </motion.div>
-
-            {/* Removed "Book Appointment" floating card */}
 
             <motion.div 
                 animate={{ y: [0, 10, 0] }}
