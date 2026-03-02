@@ -1,29 +1,41 @@
 import React from 'react';
 import { Star } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-const DoctorCard = ({ name, role, rating, reviews, image }: { name: string, role: string, rating: number, reviews: number, image: string }) => (
-  <div className="bg-white rounded-[20px] p-4 shadow-card hover:shadow-lg transition-all border border-gray-50 flex flex-col items-center">
-    <div className="w-full h-64 rounded-[20px] overflow-hidden mb-4 bg-gray-100 relative">
-        <img src={image} alt={name} className="w-full h-full object-cover object-top" />
-    </div>
-    <h3 className="text-xl font-medium text-secondary">{name}</h3>
-    <p className="text-text-gray text-sm mb-2">{role}</p>
-    
-    <div className="flex items-center gap-1 mb-4">
-        {[...Array(5)].map((_, i) => (
-            <Star key={i} size={16} className={i < Math.floor(rating) ? "text-primary fill-primary" : "text-gray-300"} />
-        ))}
-        <span className="text-secondary text-sm ml-1">({reviews})</span>
-    </div>
+const DoctorCard = ({ name, role, rating, reviews, image }: { name: string, role: string, rating: number, reviews: number, image: string }) => {
+  const navigate = useNavigate();
+  
+  return (
+    <div className="bg-white rounded-[20px] p-4 shadow-card hover:shadow-lg transition-all border border-gray-50 flex flex-col items-center h-full">
+      <div className="w-full h-64 rounded-[20px] overflow-hidden mb-4 bg-gray-100 relative">
+          <img src={image} alt={name} className="w-full h-full object-cover object-top" />
+      </div>
+      <h3 className="text-xl font-medium text-secondary text-center">{name}</h3>
+      <p className="text-text-gray text-sm mb-2 text-center">{role}</p>
+      
+      <div className="flex items-center gap-1 mb-6">
+          {[...Array(5)].map((_, i) => (
+              <Star key={i} size={16} className={i < Math.floor(rating) ? "text-primary fill-primary" : "text-gray-300"} />
+          ))}
+          <span className="text-secondary text-sm ml-1">({reviews})</span>
+      </div>
 
-    {/* Booking Button Removed */}
-    <div className="w-full py-2 text-center text-sm text-primary font-medium bg-primary/5 rounded-xl">
-        Available
+      <button 
+        onClick={() => navigate('/login')}
+        className="w-full py-2.5 mt-auto text-center text-sm text-white font-medium bg-primary rounded-xl hover:bg-primary/90 transition-colors shadow-md shadow-primary/20"
+      >
+          Book Appointment
+      </button>
     </div>
-  </div>
-);
+  );
+};
 
-const Doctors = () => {
+interface DoctorsProps {
+  searchQuery?: string;
+  specialityQuery?: string;
+}
+
+const Doctors = ({ searchQuery = '', specialityQuery = '' }: DoctorsProps) => {
   const doctors = [
     {
         name: "Dr. Robert Henry",
@@ -55,25 +67,41 @@ const Doctors = () => {
     }
   ];
 
+  // Filter doctors based on search queries
+  const filteredDoctors = doctors.filter(doc => {
+    const matchesName = doc.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSpeciality = doc.role.toLowerCase().includes(specialityQuery.toLowerCase());
+    return matchesName && matchesSpeciality;
+  });
+
   return (
-    <section className="py-20 px-4 md:px-12 bg-gray-50/50">
+    <section id="doctors-section" className="py-20 px-4 md:px-12 bg-gray-50/50">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-semibold text-secondary mb-4">Meet our Doctors</h2>
           <p className="text-text-gray">Well qualified doctors are ready to serve you</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {doctors.map((doc, index) => (
-                <DoctorCard key={index} {...doc} />
-            ))}
-        </div>
+        {filteredDoctors.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {filteredDoctors.map((doc, index) => (
+                  <DoctorCard key={index} {...doc} />
+              ))}
+          </div>
+        ) : (
+          <div className="text-center py-12 text-text-gray">
+            <p className="text-lg">No doctors found matching your search criteria.</p>
+            <p className="text-sm mt-2">Try adjusting your search terms.</p>
+          </div>
+        )}
 
-        <div className="flex justify-center mt-12">
-            <button className="bg-primary text-white px-8 py-3 rounded-2xl font-medium shadow-lg shadow-primary/20">
-                See more
-            </button>
-        </div>
+        {filteredDoctors.length > 0 && (
+          <div className="flex justify-center mt-12">
+              <button className="bg-white border border-gray-200 text-secondary hover:bg-gray-50 px-8 py-3 rounded-2xl font-medium transition-colors">
+                  See more
+              </button>
+          </div>
+        )}
       </div>
     </section>
   );

@@ -8,8 +8,7 @@ const Navbar = () => {
   return (
     <nav className="w-full py-6 px-4 md:px-12 flex justify-between items-center bg-white sticky top-0 z-50 shadow-sm md:shadow-none">
       <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
-        <div className="text-primary font-bold text-2xl">Hospital</div>
-        <div className="text-secondary text-2xl">logo</div>
+        <div className="text-primary font-bold text-2xl">Nidaan</div>
       </div>
 
       <div className="hidden md:flex items-center gap-8 text-secondary font-medium">

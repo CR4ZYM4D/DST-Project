@@ -1,5 +1,5 @@
 import React from 'react';
-import { Users, Activity, FileText, Settings, Brain, LogOut, MessageSquare, Home, ClipboardList, Thermometer } from 'lucide-react';
+import { Users, Activity, Settings, LogOut, MessageSquare, Home, ClipboardList, Thermometer } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { UserRole } from '../../types';
 
@@ -32,8 +32,7 @@ const Sidebar = ({ role }: SidebarProps) => {
   return (
     <aside className="w-64 bg-white border-r border-gray-200 fixed h-full hidden md:flex flex-col z-20">
       <div className="p-6 flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
-         <div className="text-primary font-bold text-2xl">Hospital</div>
-         <div className="text-secondary text-2xl">AI</div>
+         <div className="text-primary font-bold text-2xl">Nidaan</div>
       </div>
       
       <nav className="flex-1 px-4 py-6 space-y-2">
