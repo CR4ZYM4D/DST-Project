@@ -1,6 +1,17 @@
+// import libraries 
 import express from 'express';
+// import functions
+import loginRoute from './routes/login.js';
+import { connectDB } from './utils/features.js';
 const port = 5173;
+// init app
 const app = express();
+app.use(express.json());
+// connect to DB
+connectDB();
+// use loginRoute
+app.use('/', loginRoute);
+// listen to port
 app.listen(port, () => {
     console.log(`server is working on port http://localhost:${port}`);
 });

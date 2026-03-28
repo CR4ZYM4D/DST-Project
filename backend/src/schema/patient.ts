@@ -19,12 +19,14 @@ const patientSchema = new mongoose.Schema(
     {
         name: {
             type: String,
-            required: true
+            required: true,
+            default: "Name"
         },
 
         password: {
             type: String,
-            required: true
+            required: true,
+            default: "password"
         },
 
         phone: {
@@ -36,12 +38,14 @@ const patientSchema = new mongoose.Schema(
         dob: {
             type: Date,
             required: true,
+            default: Date.now
         },
 
         gender: {
             type: String,
             required: true,
-            enum: ['male', 'female', 'other']
+            enum: ['male', 'female', 'other'],
+            default: "male"
         },
 
         is_veg: {
