@@ -4,6 +4,7 @@ import express from 'express'
 // import functions
 import loginRoute from './routes/login.js' 
 import { connectDB } from './utils/features.js'
+import { errorMiddleware } from './middleware/error.js'
 
 const port = 5173
 
@@ -16,6 +17,9 @@ connectDB()
 
 // use loginRoute
 app.use('/', loginRoute)
+
+// error handling
+app.use(errorMiddleware)
 
 // listen to port
 app.listen(port, ()=> {
