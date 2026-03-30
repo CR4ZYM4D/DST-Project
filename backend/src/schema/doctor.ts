@@ -3,6 +3,7 @@ import mongoose, { Schema, Types, Document } from 'mongoose'
 interface IDoctor extends Document{
 
     name: string,
+    email: string,
     password: string,
     license_no: string,
     specialty: string,
@@ -25,43 +26,56 @@ const doctorSchema = new mongoose.Schema(
     {
         name: {
             type: String, 
-            required: true
+            required: true,
+            default: "Name"
         },
 
-        password: {
-            type: String,
-            required: true
-        },
-
-        license_no: {
+        email:{
             type: String,
             required: true,
             unique: true
         },
 
+        password: {
+            type: String,
+            required: true,
+            default: "password"
+        },
+
+        license_no: {
+            type: String,
+            required: true,
+            unique: true,
+        },
+
         specialty: {
             type: String,
-            required: true
+            required: true,
+            default: "General surgeon"
         },
 
         address: {
             type: String,
-            required: true
+            required: true,
+            default: "Address"
         },
 
         fee: {
             type: Number,
-            required: true
+            required: true,
+            default: 500.00
         },
 
         working_hrs: {
             start: {
                 type: String,
-                required: true
+                required: true,
+                default: "10:00"
             },
             end: {
                 type: String,
-                required: true
+                required: true,
+                default: "5:00"
             }
         },
 

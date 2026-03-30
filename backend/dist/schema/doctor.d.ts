@@ -1,6 +1,7 @@
 import mongoose, { Types, Document } from 'mongoose';
 interface IDoctor extends Document {
     name: string;
+    email: string;
     password: string;
     license_no: string;
     specialty: string;
