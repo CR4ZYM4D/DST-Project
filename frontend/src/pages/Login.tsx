@@ -8,22 +8,52 @@ const Login = () => {
   const [role, setRole] = useState<'doctor' | 'patient' | 'admin'>('doctor');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    
-    // Simulate a network request for a smoother, flawless experience
-    setTimeout(() => {
-      setIsLoading(false);
-      if (role === 'admin') {
-        navigate('/dashboard/admin');
-      } else if (role === 'doctor') {
-        navigate('/dashboard/doctor');
+  const [id, setId] = useState("")
+  const [password, setPassword] = useState("")
+
+  const handleLogin = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setIsLoading(true);
+
+  try {
+    const res = await fetch("http://localhost:5000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        id,
+        password
+      })
+    });
+
+    const data = await res.json();
+
+    setIsLoading(false);
+
+    console.log({id, password})
+    console.log(res.status)
+    console.log(data)
+
+    if (data.success) {
+      if (data.role === "admin") {
+        navigate("/dashboard/admin");
+      } else if (data.role === "doctor") {
+        navigate("/dashboard/doctor");
       } else {
-        navigate('/dashboard/patient');
+        navigate("/dashboard/patient");
       }
-    }, 800);
-  };
+    } else {
+      alert("Invalid credentials");
+    }
+
+  } catch (err) {
+    setIsLoading(false);
+    console.error(err);
+    alert("Something went wrong");
+  }
+};
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 relative overflow-hidden">
@@ -80,7 +110,9 @@ const Login = () => {
               <div className="relative">
                 <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                 <input 
-                  type={role === 'patient' ? 'tel' : 'email'} 
+                  type={role === 'patient' ? 'tel' : 'email'}
+                  value = {id}
+                  onChange = { (e)=> {setId(e.target.value)}} 
                   className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 pl-12 pr-4 text-secondary focus:outline-none focus:border-primary focus:bg-white transition-colors"
                   placeholder={role === 'doctor' ? 'dr.name@hospital.com' : role === 'admin' ? 'admin@nidaan.com' : '+1 (555) 000-0000'}
                   required
@@ -94,6 +126,8 @@ const Login = () => {
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                 <input 
                   type="password" 
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 pl-12 pr-4 text-secondary focus:outline-none focus:border-primary focus:bg-white transition-colors"
                   placeholder="••••••••"
                   required
