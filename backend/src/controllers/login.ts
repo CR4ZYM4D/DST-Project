@@ -33,8 +33,10 @@ export const login = TryCatch(
             if(validator.isMobilePhone(id))
                 user = await Patient.findOne({ phone: id })
 
-            else 
+            else{ 
                 res.status(400).json({message: "Invalid Credentials"})
+                return 
+            }
         }
 
         if (!user) {
@@ -51,7 +53,9 @@ export const login = TryCatch(
         }
 
         const token = jwt.sign(
-            { id: user._id },
+            { id: user._id, 
+              role: isDoctor ? "doctor" : "patient" 
+            },
             process.env.JWT_SECRET as string,
             { expiresIn: "1d" }
         )
