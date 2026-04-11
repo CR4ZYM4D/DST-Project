@@ -12,13 +12,12 @@ interface IDoctor extends Document{
     working_hrs: {
         start: string
         end: string
-    }
+    },
     patients: Types.ObjectId[],
     isVerified: boolean,
     createdAt: Date,
     updatedAt: Date,
     rating: number
-
 }
 
 const doctorSchema = new mongoose.Schema(

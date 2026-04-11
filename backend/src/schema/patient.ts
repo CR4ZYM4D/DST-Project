@@ -8,6 +8,11 @@ interface IPatient extends Document{
     phone: string,
     dob: Date,
     age: number,
+    bloodGroup: string,
+    isVeg: boolean,
+    appointmentHistory: [],
+    medicalHistory: [],
+    allergens:[],
     gender: "male" | "female" | "other",
     createdAt: Date,
     updatedAt: Date,
@@ -48,10 +53,15 @@ const patientSchema = new mongoose.Schema(
             default: "male"
         },
 
-        is_veg: {
+        isVeg: {
             type: Boolean,
             required: true,
             default: true
+        },
+        
+        bloodGroup: {
+            type: String,
+            required: true,
         },
 
         allergens: {
@@ -59,12 +69,12 @@ const patientSchema = new mongoose.Schema(
             default: []
         },
 
-        medical_history: {
+        medicalHistory: {
             type: [String],
             default: []           
         },
 
-        appointment_history: {
+        appointmentHistory: {
             type: [String],
             default: []
         }

@@ -29,7 +29,12 @@ export const login = TryCatch(
             user = await Doctor.findOne({ email: id })
             isDoctor = true
         } else {
-            user = await Patient.findOne({ phone: id })
+
+            if(validator.isMobilePhone(id))
+                user = await Patient.findOne({ phone: id })
+
+            else 
+                res.status(400).json({message: "Invalid Credentials"})
         }
 
         if (!user) {
