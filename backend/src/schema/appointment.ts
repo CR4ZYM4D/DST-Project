@@ -48,9 +48,7 @@ apptSchema.virtual("hasOccurred").get(function(){
     const today = new Date()
     const apptDate = this.date
 
-    if(apptDate.getDate() <= today.getDate() && 
-    apptDate.getMonth() <= today.getMonth() && 
-    apptDate.getFullYear() <= today.getFullYear()) return true
+    if(apptDate < new Date()) return true
 
     return false
 

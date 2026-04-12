@@ -5,6 +5,7 @@ interface IPatient extends Document{
 
     name: string,
     password: string,
+    indexNo: number,
     phone: string,
     dob: Date,
     age: number,
@@ -13,6 +14,11 @@ interface IPatient extends Document{
     appointmentHistory: [],
     medicalHistory: [],
     allergens:[],
+    reports: [{
+        tile: string,
+        fileUrl: string,
+        createdAt: Date
+    }],
     gender: "male" | "female" | "other",
     createdAt: Date,
     updatedAt: Date,
@@ -38,6 +44,12 @@ const patientSchema = new mongoose.Schema(
             type: String,
             required: [true, 'please enter phone number'],
             validate: validator.default.isMobilePhone
+        },
+
+        indexNo: {
+            type: Number,
+            required: true,
+            default: 1
         },
 
         dob: {
@@ -77,7 +89,15 @@ const patientSchema = new mongoose.Schema(
         appointmentHistory: {
             type: [String],
             default: []
-        }
+        },
+
+        reports: [
+            {
+                title: String,
+                fileUrl: String,
+                createdAt: Date
+            }
+        ]
 
     },
     {timestamps: true}

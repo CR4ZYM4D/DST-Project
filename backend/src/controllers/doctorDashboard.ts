@@ -5,6 +5,7 @@ import { Appointment } from "../schema/appointment.js"
 import { Activity } from "../schema/activity.js"
 import { Analysis } from "../schema/analysis.js"
 import type { AuthRequest } from "../middleware/auth.js"
+
 import jwt from 'jsonwebtoken'
 
 import path from "path"
