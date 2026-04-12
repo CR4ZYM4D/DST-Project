@@ -8,20 +8,20 @@ import {Patient} from "../schema/patient.js"
 const router = express.Router()
 
 // patient
-router.get("/patient", authMiddleware, async (req: Request, res) => {
+// router.get("/patient", authMiddleware, async (req: Request, res) => {
 
-    if (req.user.role !== "patient") {
-        return res.status(403).json({ message: "Access denied" })
-    }
+//     if (req.user.role !== "patient") {
+//         return res.status(403).json({ message: "Access denied" })
+//     }
 
-    const patient = await Patient.findById(req.user.id)
+//     const patient = await Patient.findById(req.user.id)
 
-    if(!patient){
-        return res.status(403).json({ message: "Access denied" })
-    }
+//     if(!patient){
+//         return res.status(403).json({ message: "Access denied" })
+//     }
 
-    res.json(patient)
-})
+//     res.json(patient)
+// })
 
 // doctor
 router.get("/doctor", doctorDashboard)

@@ -63,9 +63,10 @@ export const login = TryCatch(
         res.cookie("token", token, {
             httpOnly: true,
             secure: false, // for local testing
-            sameSite: "strict",
+            sameSite: "lax",
             maxAge: 1 * 24 * 60 * 60 * 1000
         })
+        
 
         res.status(200).json({
             success: true,

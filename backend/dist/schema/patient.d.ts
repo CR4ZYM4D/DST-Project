@@ -5,6 +5,11 @@ interface IPatient extends Document {
     phone: string;
     dob: Date;
     age: number;
+    bloodGroup: string;
+    isVeg: boolean;
+    appointmentHistory: [];
+    medicalHistory: [];
+    allergens: [];
     gender: "male" | "female" | "other";
     createdAt: Date;
     updatedAt: Date;

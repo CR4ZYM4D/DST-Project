@@ -21,7 +21,12 @@ export const login = TryCatch(async (req, res, next) => {
         isDoctor = true;
     }
     else {
-        user = await Patient.findOne({ phone: id });
+        if (validator.isMobilePhone(id))
+            user = await Patient.findOne({ phone: id });
+        else {
+            res.status(400).json({ message: "Invalid Credentials" });
+            return;
+        }
     }
     if (!user) {
         res.status(400).json({ message: "User not found" });
@@ -33,11 +38,13 @@ export const login = TryCatch(async (req, res, next) => {
         res.status(400).json({ message: "Invalid credentials" });
         return;
     }
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
+    const token = jwt.sign({ id: user._id,
+        role: isDoctor ? "doctor" : "patient"
+    }, process.env.JWT_SECRET, { expiresIn: "1d" });
     res.cookie("token", token, {
         httpOnly: true,
         secure: false, // for local testing
-        sameSite: "strict",
+        sameSite: "lax",
         maxAge: 1 * 24 * 60 * 60 * 1000
     });
     res.status(200).json({

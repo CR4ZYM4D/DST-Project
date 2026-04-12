@@ -5,14 +5,31 @@ import { Appointment } from "../schema/appointment.js"
 import { Activity } from "../schema/activity.js"
 import { Analysis } from "../schema/analysis.js"
 import type { AuthRequest } from "../middleware/auth.js"
+import jwt from 'jsonwebtoken'
 
+import path from "path"
+import { fileURLToPath } from "url"
+import dotenv from "dotenv"
 
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+dotenv.config({
+    path: path.resolve(__dirname, "../../.env")
+})
 
 const doctorDashboard = TryCatch(async (req: Request, res: Response, next: NextFunction) => {
 
-    let authReq = req as AuthRequest
+    const token = req.cookies.token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
+        id: string,
+        role: string
+    }
 
-    if (!authReq.user || authReq.user.role !== "doctor") {
+    let authReq = req as AuthRequest
+    authReq.user = decoded    
+
+    if (!token) {
         res.status(403).json({ message: "Access denied" })         
         return
     }
@@ -38,13 +55,19 @@ const doctorDashboard = TryCatch(async (req: Request, res: Response, next: NextF
     // const alerts = await Alert.find({ doctor: doctor._id, priority: { $in: ['critical', 'high'] }, resolved: false }).sort({ createdAt: -1 }).limit(5).lean()
 
     res.json({
+
+        // full schema entry
         doctor: doctor,
+
+        // stat card entries
         stats: {
             totalPatients,
-            activeCases,
+            // active cases not needed nut for safety //activeCases,
             //criticalAlerts,
             aiAnalyses
         },
+
+        // recent activity
         activityFeed: activityFeed.map(item => ({
             id: item._id,
             title: item.title,

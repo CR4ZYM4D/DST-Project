@@ -27,20 +27,24 @@ const patientSchema = new mongoose.Schema({
         enum: ['male', 'female', 'other'],
         default: "male"
     },
-    is_veg: {
+    isVeg: {
         type: Boolean,
         required: true,
         default: true
+    },
+    bloodGroup: {
+        type: String,
+        required: true,
     },
     allergens: {
         type: [String],
         default: []
     },
-    medical_history: {
+    medicalHistory: {
         type: [String],
         default: []
     },
-    appointment_history: {
+    appointmentHistory: {
         type: [String],
         default: []
     }
