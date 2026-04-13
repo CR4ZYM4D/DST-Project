@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 interface IPatient extends Document {
     name: string;
     password: string;
+    indexNo: number;
     phone: string;
     dob: Date;
     age: number;
@@ -10,6 +11,13 @@ interface IPatient extends Document {
     appointmentHistory: [];
     medicalHistory: [];
     allergens: [];
+    reports: [
+        {
+            tile: string;
+            fileUrl: string;
+            createdAt: Date;
+        }
+    ];
     gender: "male" | "female" | "other";
     createdAt: Date;
     updatedAt: Date;
