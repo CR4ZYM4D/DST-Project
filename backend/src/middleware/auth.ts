@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken"
 import path from "path"
 import { fileURLToPath } from "url"
 import dotenv from "dotenv"
+import { TryCatch } from "./error.js"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -13,25 +14,28 @@ dotenv.config({
 })
 
 export interface AuthRequest extends Request {
-    user?: any
+    user: {
+        id: string,
+        role: string
+    }
 }
 
-export const authMiddleware = (req: AuthRequest, res: Response, next: NextFunction) => {
+export const authMiddleware = TryCatch(async (req: Request, res: Response, next: NextFunction) => {
     const token = req.cookies.token
 
+    let authReq = req as AuthRequest
+
     if (!token) {
-        return res.status(401).json({ message: "Not authenticated" })
+        res.status(401).json({ message: "Not authenticated" })
+        return
     }
+    
+    const decoded = jwt.verify(
+        token,
+        process.env.JWT_SECRET as string
+    ) as { id: string; role: string }
 
-    try {
-        const decoded = jwt.verify(
-            token,
-            process.env.JWT_SECRET as string
-        ) as any
+    authReq.user = decoded
+    return next()
 
-        req.user = decoded
-        next()
-    } catch (err) {
-        return res.status(401).json({ message: "Invalid token" })
-    }
-}
+})

@@ -1,33 +1,28 @@
 import express from "express"
-import {authMiddleware} from "../middleware/auth.js"
-import type { AuthRequest } from "../middleware/auth.js"
-import {Doctor} from "../schema/doctor.js"
-import {Patient} from "../schema/patient.js"
+
+import doctorDashboard from "../controllers/doctorDashboard.js"
+import patientDashboard from "../controllers/patientDashboard.js"
 
 const router = express.Router()
 
 // patient
-router.get("/patient", authMiddleware, async (req: AuthRequest, res) => {
+router.get("/patient",patientDashboard) 
+    //authMiddleware, async (req: Request, res) => {
 
-    if (req.user.role !== "patient") {
-        return res.status(403).json({ message: "Access denied" })
-    }
+//     if (req.user.role !== "patient") {
+//         return res.status(403).json({ message: "Access denied" })
+//     }
 
-    const patient = await Patient.findById(req.user.id)
+//     const patient = await Patient.findById(req.user.id)
 
-    res.json(patient)
-})
+//     if(!patient){
+//         return res.status(403).json({ message: "Access denied" })
+//     }
+
+//     res.json(patient)
+// })
 
 // doctor
-router.get("/doctor", authMiddleware, async (req: AuthRequest, res) => {
-
-    if (req.user.role !== "doctor") {
-        return res.status(403).json({ message: "Access denied" })
-    }
-
-    const doctor = await Doctor.findById(req.user.id)
-
-    res.json(doctor)
-})
+router.get("/doctor", doctorDashboard)
 
 export default router

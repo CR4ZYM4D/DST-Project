@@ -9,7 +9,7 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import dashboardRoute from './routes/dashboardRoute.js'
 
-const port = 5173
+const port = 5000
 
 // init app
 const app = express()

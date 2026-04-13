@@ -16,6 +16,11 @@ const patientSchema = new mongoose.Schema({
         required: [true, 'please enter phone number'],
         validate: validator.default.isMobilePhone
     },
+    indexNo: {
+        type: Number,
+        required: true,
+        default: 1
+    },
     dob: {
         type: Date,
         required: true,
@@ -27,23 +32,34 @@ const patientSchema = new mongoose.Schema({
         enum: ['male', 'female', 'other'],
         default: "male"
     },
-    is_veg: {
+    isVeg: {
         type: Boolean,
         required: true,
         default: true
+    },
+    bloodGroup: {
+        type: String,
+        required: true,
     },
     allergens: {
         type: [String],
         default: []
     },
-    medical_history: {
+    medicalHistory: {
         type: [String],
         default: []
     },
-    appointment_history: {
+    appointmentHistory: {
         type: [String],
         default: []
-    }
+    },
+    reports: [
+        {
+            title: String,
+            fileUrl: String,
+            createdAt: Date
+        }
+    ]
 }, { timestamps: true });
 patientSchema.virtual("age").get(function () {
     const today = new Date();

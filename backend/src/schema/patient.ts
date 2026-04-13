@@ -5,9 +5,20 @@ interface IPatient extends Document{
 
     name: string,
     password: string,
+    indexNo: number,
     phone: string,
     dob: Date,
     age: number,
+    bloodGroup: string,
+    isVeg: boolean,
+    appointmentHistory: [],
+    medicalHistory: [],
+    allergens:[],
+    reports: [{
+        tile: string,
+        fileUrl: string,
+        createdAt: Date
+    }],
     gender: "male" | "female" | "other",
     createdAt: Date,
     updatedAt: Date,
@@ -35,6 +46,12 @@ const patientSchema = new mongoose.Schema(
             validate: validator.default.isMobilePhone
         },
 
+        indexNo: {
+            type: Number,
+            required: true,
+            default: 1
+        },
+
         dob: {
             type: Date,
             required: true,
@@ -48,10 +65,15 @@ const patientSchema = new mongoose.Schema(
             default: "male"
         },
 
-        is_veg: {
+        isVeg: {
             type: Boolean,
             required: true,
             default: true
+        },
+        
+        bloodGroup: {
+            type: String,
+            required: true,
         },
 
         allergens: {
@@ -59,15 +81,23 @@ const patientSchema = new mongoose.Schema(
             default: []
         },
 
-        medical_history: {
+        medicalHistory: {
             type: [String],
             default: []           
         },
 
-        appointment_history: {
+        appointmentHistory: {
             type: [String],
             default: []
-        }
+        },
+
+        reports: [
+            {
+                title: String,
+                fileUrl: String,
+                createdAt: Date
+            }
+        ]
 
     },
     {timestamps: true}

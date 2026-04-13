@@ -29,7 +29,14 @@ export const login = TryCatch(
             user = await Doctor.findOne({ email: id })
             isDoctor = true
         } else {
-            user = await Patient.findOne({ phone: id })
+
+            if(validator.isMobilePhone(id))
+                user = await Patient.findOne({ phone: id })
+
+            else{ 
+                res.status(400).json({message: "Invalid Credentials"})
+                return 
+            }
         }
 
         if (!user) {
@@ -37,7 +44,8 @@ export const login = TryCatch(
             return
         }
 
-        const isMatch = await bcrypt.compare(password, user.password)
+        // const isMatch = await bcrypt.compare(password, user.password)
+        const isMatch = (password == user.password)
 
         if (!isMatch) {
             res.status(400).json({ message: "Invalid credentials" })
@@ -45,7 +53,9 @@ export const login = TryCatch(
         }
 
         const token = jwt.sign(
-            { id: user._id },
+            { id: user._id, 
+              role: isDoctor ? "doctor" : "patient" 
+            },
             process.env.JWT_SECRET as string,
             { expiresIn: "1d" }
         )
@@ -53,13 +63,15 @@ export const login = TryCatch(
         res.cookie("token", token, {
             httpOnly: true,
             secure: false, // for local testing
-            sameSite: "strict",
+            sameSite: "lax",
             maxAge: 1 * 24 * 60 * 60 * 1000
         })
+        
 
         res.status(200).json({
             success: true,
             role: isDoctor? "doctor": "patient" 
         })
+        return
     }
 )
